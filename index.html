@@ -237,6 +237,18 @@ textarea { min-height: 120px; resize: vertical; }
 input:focus, select:focus, textarea:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(56,212,255,.2), 0 0 18px rgba(56,212,255,.25); }
 .status { grid-column: 1 / -1; min-height: 24px; font-size: 14px; color: var(--cyan); margin: 0; }
 
+.privacy-note { margin-top: 2px; }
+.privacy-check { display: flex; align-items: flex-start; gap: 10px; font: 400 12px/1.6 var(--body); letter-spacing: 0; text-transform: none; color: #c3d2ef; }
+.privacy-check input { width: 17px; min-width: 17px; height: 17px; margin: 1px 0 0; accent-color: var(--cyan); }
+.privacy-check a, .form-hint a, .policy a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+.form-hint { color: #8fa6d4; font-size: 12px; line-height: 1.6; margin: -6px 0 0; }
+.policy { border-top: 1px solid var(--line); padding: 64px 0; background: rgba(4,10,27,.72); }
+.policy h2 { margin-bottom: 22px; }
+.policy h3 { margin: 26px 0 8px; font-size: 17px; }
+.policy p, .policy li { color: #c3d2ef; line-height: 1.75; font-size: 14px; }
+.policy ul { padding-left: 22px; }
+.policy .policy-updated { color: #8fa6d4; font-size: 12px; }
+
 footer { border-top: 1px solid var(--line); padding-block: 26px; font: 500 11px/1 var(--body); letter-spacing: .24em; text-transform: uppercase; color: #7f93bf; }
 footer .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 footer .ln { display: inline-flex; align-items: center; gap: 14px; }
@@ -374,21 +386,53 @@ footer .ln::before, footer .ln::after { content: ""; width: 44px; height: 2px; b
       <h2>Vamos <em>modelar</em> o seu projeto?</h2>
       <p style="color:#c3d2ef;max-width:30em">Conte o que você precisa e receba uma proposta sob medida, com escopo, prazo e valor.</p>
     </div>
-    <form id="orc" novalidate>
-      <label for="nome">Nome<input id="nome" name="nome" autocomplete="name" required></label>
-      <label for="email">E-mail<input id="email" name="email" type="email" autocomplete="email" required></label>
-      <label class="full" for="tipo">Tipo de projeto
-        <select id="tipo" name="tipo"><option>Site institucional</option><option>Loja virtual</option><option>Sistema web</option><option>Automação</option></select>
+    <form id="orc">
+      <label for="nome">Nome<input id="nome" name="nome" autocomplete="name" maxlength="100" required></label>
+      <label for="contato-cliente">Telefone ou e-mail<input id="contato-cliente" name="contato" autocomplete="email" maxlength="120" placeholder="Como podemos falar com você?" required></label>
+      <label class="full" for="tipo">Serviço desejado
+        <select id="tipo" name="tipo" required>
+          <option value="" selected disabled>Selecione o serviço</option>
+          <option>Site institucional</option><option>Loja virtual</option><option>Sistema web</option><option>Automação</option><option>Manutenção ou melhoria</option><option>Outro projeto</option>
+        </select>
       </label>
-      <label class="full" for="msg">Mensagem<textarea id="msg" name="msg" required></textarea></label>
-      <div class="full"><button class="btn" type="submit">Enviar pedido <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>
-      <p class="status" id="status" role="status"></p>
+      <label for="orcamento">Faixa de orçamento
+        <select id="orcamento" name="orcamento" required>
+          <option value="" selected disabled>Selecione uma faixa</option><option>Até R$ 500</option><option>R$ 500 a R$ 1.500</option><option>R$ 1.500 a R$ 3.000</option><option>R$ 3.000 a R$ 5.000</option><option>Acima de R$ 5.000</option><option>Ainda não defini</option>
+        </select>
+      </label>
+      <label class="full" for="msg">Descrição do projeto<textarea id="msg" name="msg" maxlength="2000" placeholder="Conte um pouco sobre o que você precisa..." required></textarea></label>
+      <div class="full privacy-note">
+        <label class="privacy-check" for="privacidade-ok"><input id="privacidade-ok" name="privacidade-ok" type="checkbox" required> <span>Li o <a href="#privacidade">Aviso de Privacidade</a> e estou ciente de que, ao continuar, os dados preenchidos serão incluídos em uma mensagem para a Modela Web pelo WhatsApp.</span></label>
+      </div>
+      <div class="full"><button class="btn" type="submit">Continuar no WhatsApp <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+      <p class="form-hint full">O site não envia a mensagem automaticamente nem armazena o pedido em um banco de dados. O WhatsApp abrirá para você revisar e enviar.</p>
     </form>
   </div>
 </section>
 </main>
 
-<footer><div class="wrap"><span>Modela Web</span><span class="ln">Desde 2020</span></div></footer>
+<section class="policy" id="privacidade">
+  <div class="wrap">
+    <div class="tag">Privacidade e transparência</div>
+    <h2>Aviso de <em>Privacidade</em></h2>
+    <p class="policy-updated">Última atualização: 27 de outubro de 2026</p>
+    <p>A Modela Web respeita a privacidade de quem solicita informações e orçamentos. Este aviso explica como os dados digitados no formulário são usados nesta etapa de contato.</p>
+    <h3>Quais dados podem ser informados?</h3>
+    <p>Nome, telefone ou e-mail, serviço desejado, faixa de orçamento e descrição do projeto. Não inclua senhas, dados bancários, documentos pessoais ou informações sensíveis no campo de descrição.</p>
+    <h3>Para que usamos os dados?</h3>
+    <p>As informações são usadas para entender sua solicitação, responder ao pedido e conversar sobre escopo, prazo e orçamento do serviço solicitado.</p>
+    <h3>O que acontece ao clicar no botão?</h3>
+    <p>O site monta uma mensagem com os dados preenchidos e abre uma conversa com a Modela Web no WhatsApp. A mensagem não é enviada automaticamente: você poderá revisar e decidir se deseja enviá-la. Ao abrir e usar o WhatsApp, os dados passam a ser tratados também pela Meta/WhatsApp conforme os termos e a política de privacidade desse serviço.</p>
+    <h3>Armazenamento e compartilhamento</h3>
+    <p>Esta versão do formulário não envia os dados para um banco de dados próprio nem os grava no servidor do site. Os dados são colocados no link que abre o WhatsApp após sua ação. O provedor de hospedagem pode tratar dados técnicos de acesso, como parte dos registros de segurança e funcionamento. Não vendemos os dados do formulário.</p>
+    <h3>Seus direitos e contato</h3>
+    <p>Nos termos da legislação aplicável, você pode solicitar informações sobre o tratamento dos seus dados e exercer os direitos previstos na LGPD. Para fazer uma solicitação ou tirar dúvidas sobre um orçamento, entre em contato pelo <a href="https://wa.me/5571986324415" target="_blank" rel="noopener noreferrer">WhatsApp da Modela Web</a>.</p>
+    <h3>Segurança</h3>
+    <p>Evite inserir informações que não sejam necessárias para o orçamento. Como a conversa será conduzida pelo WhatsApp, consulte também as práticas de segurança e privacidade da plataforma. Este aviso deverá ser revisto se o formulário passar a usar ferramentas de análise, CRM, banco de dados ou outros serviços.</p>
+  </div>
+</section>
+<footer><div class="wrap"><span>© <span id="ano-atual">2026</span> Modela Web. Direitos reservados.</span><span class="ln">Desde 2020</span><a href="#privacidade">Política de Privacidade</a></div></footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -415,13 +459,38 @@ footer .ln::before, footer .ln::after { content: ""; width: 44px; height: 2px; b
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
   var form = document.getElementById('orc'), status = document.getElementById('status');
+  var whatsappNumber = '5571986324415';
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var n = form.nome.value.trim(), m = form.email.value.trim(), t = form.msg.value.trim();
-    if (!n || !/^\S+@\S+\.\S+$/.test(m) || !t) { status.textContent = 'Preencha nome, um e-mail válido e a mensagem.'; return; }
-    status.textContent = 'Pedido anotado, ' + n.split(' ')[0] + '. Esta página é um modelo: ligue o formulário ao seu e-mail ou WhatsApp para receber os pedidos.';
-    form.reset();
+    var nome = document.getElementById('nome').value.trim();
+    var contato = document.getElementById('contato-cliente').value.trim();
+    var servico = document.getElementById('tipo').value;
+    var orcamento = document.getElementById('orcamento').value;
+    var descricao = document.getElementById('msg').value.trim();
+    var privacidade = document.getElementById('privacidade-ok').checked;
+    if (!nome || !contato || !servico || !orcamento || !descricao || !privacidade) {
+      status.textContent = 'Preencha os campos obrigatórios e confirme a leitura do Aviso de Privacidade.';
+      return;
+    }
+    if (contato.indexOf('@') !== -1 && !/^\S+@\S+\.\S+$/.test(contato)) {
+      status.textContent = 'Confira o e-mail informado ou preencha um telefone válido.';
+      document.getElementById('contato-cliente').focus();
+      return;
+    }
+    var mensagem = 'Olá, Modela Web! Gostaria de solicitar um orçamento.\n\n' +
+      'Nome: ' + nome + '\n' +
+      'Telefone ou e-mail: ' + contato + '\n' +
+      'Serviço desejado: ' + servico + '\n' +
+      'Faixa de orçamento: ' + orcamento + '\n' +
+      'Descrição do projeto: ' + descricao + '\n\n' +
+      'Enviei estes dados pelo formulário do site Modela Web.';
+    var url = 'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(mensagem);
+    status.textContent = 'Abrindo o WhatsApp para você revisar e enviar a mensagem…';
+    var win = window.open(url, '_blank', 'noopener,noreferrer');
+    if (!win) { window.location.href = url; }
   });
+  var year = document.getElementById('ano-atual');
+  if (year) year.textContent = new Date().getFullYear();
 
   /* ---------- palco 3D: logo MM + anéis em órbita ---------- */
   var mount = document.getElementById('stage');
