@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#040814">
+<meta name="description" content="Modela Web: sites modernos, lojas virtuais, sistemas sob medida e automação.">
+<title>Modela Web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: cabeçalho fixo, hero em duas colunas (texto + palco 3D com logo MM e anéis em órbita), faixa de serviços em cartões chanfrados, seções Sobre, Portfólio e Contato. */
+:root {
+  --bg: #040814;
+  --bg-2: #07102a;
+  --ink: #f1f5ff;
+  --mute: #9fb2d6;
+  --blue: #1a8cff;
+  --cyan: #38d4ff;
+  --line: rgba(56, 150, 255, .32);
+  --glow: rgba(26, 140, 255, .55);
+  --display: "Unbounded", "Segoe UI", system-ui, sans-serif;
+  --body: "Manrope", "Segoe UI", system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.6 var(--body);
+  overflow-x: hidden;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 60; background: var(--bg);
+}
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
+.wrap {
+  width: 100%; max-width: 1400px; margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 900px) { .wrap { padding-left: max(48px, env(safe-area-inset-left, 0px)); padding-right: max(48px, env(safe-area-inset-right, 0px)); } }
+
+/* ---------- Header ---------- */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50;
+  background: linear-gradient(180deg, rgba(4,8,20,.96), rgba(4,8,20,.82));
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 76px; }
+.brand { display: flex; align-items: center; gap: 14px; font: 500 22px/1 var(--display); letter-spacing: .04em; white-space: nowrap; }
+.brand b { font-weight: 500; color: var(--blue); }
+.brand svg { width: 46px; height: 40px; flex: none; filter: drop-shadow(0 0 8px rgba(26,140,255,.8)); }
+.nav { display: flex; gap: 38px; }
+.nav a {
+  position: relative; padding: 8px 0; font: 600 12.5px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: #dbe6ff;
+}
+.nav a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 3px; border-radius: 3px;
+  background: var(--cyan); box-shadow: 0 0 10px var(--cyan); transform: scaleX(0); transition: transform .25s;
+}
+.nav a:hover::after, .nav a.on::after { transform: scaleX(1); }
+.nav a.on { color: #fff; }
+.top-actions { display: flex; align-items: center; gap: 22px; }
+.burger {
+  display: none; width: 44px; height: 44px; background: none; border: 0; color: var(--ink); cursor: pointer; border-radius: 10px;
+}
+.burger svg { width: 28px; height: 28px; }
+.mobile-nav { display: none; border-top: 1px solid var(--line); background: var(--bg-2); }
+.mobile-nav.open { display: block; }
+.mobile-nav .wrap { display: grid; gap: 4px; padding-block: 14px 20px; }
+.mobile-nav a { padding: 14px 4px; font: 600 14px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; border-bottom: 1px solid rgba(56,150,255,.15); }
+@media (max-width: 1060px) {
+  .nav, .top-actions .btn { display: none; }
+  .burger { display: inline-grid; place-items: center; }
+}
+
+/* ---------- Botões ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 12px; padding: 15px 26px;
+  border: 1.5px solid var(--cyan); border-radius: 14px; cursor: pointer;
+  background: rgba(10, 44, 100, .35); color: var(--ink);
+  font: 600 12.5px/1 var(--body); letter-spacing: .09em; text-transform: uppercase; white-space: nowrap;
+  box-shadow: 0 0 18px rgba(47,160,255,.45), inset 0 0 18px rgba(47,160,255,.18);
+  transition: transform .2s, box-shadow .2s, background .2s;
+}
+.btn:hover { transform: translateY(-2px); background: rgba(14, 62, 140, .55); box-shadow: 0 0 30px rgba(47,170,255,.8), inset 0 0 22px rgba(47,160,255,.3); }
+.btn svg { width: 20px; height: 20px; flex: none; }
+.btn .ico { display: grid; place-items: center; width: 34px; height: 34px; margin: -8px 0 -8px -14px; border: 1.5px solid var(--cyan); border-radius: 50%; }
+.btn .ico svg { width: 16px; height: 16px; }
+.btn.sm { padding: 9px 16px; font-size: 11px; border-radius: 10px; gap: 10px; box-shadow: 0 0 10px rgba(47,160,255,.3); }
+.btn.sm svg { width: 16px; height: 16px; }
+.play { display: inline-flex; align-items: center; gap: 16px; font: 600 12px/1 var(--body); letter-spacing: .09em; text-transform: uppercase; color: #dbe6ff; }
+.play i { display: grid; place-items: center; width: 54px; height: 54px; border: 1.5px solid var(--cyan); border-radius: 50%; box-shadow: 0 0 16px rgba(47,160,255,.5); transition: box-shadow .2s, transform .2s; }
+.play:hover i { transform: scale(1.06); box-shadow: 0 0 28px rgba(47,170,255,.9); }
+.play i svg { width: 18px; height: 18px; margin-left: 3px; fill: var(--cyan); }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative; overflow: hidden; isolation: isolate;
+  background:
+    radial-gradient(60% 70% at 72% 45%, rgba(20,90,230,.34), transparent 70%),
+    radial-gradient(40% 50% at 8% 100%, rgba(26,140,255,.16), transparent 70%),
+    linear-gradient(180deg, var(--bg), #050b1d);
+  border-bottom: 1px solid var(--line);
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; opacity: .5;
+  background-image:
+    linear-gradient(rgba(56,150,255,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,150,255,.07) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(70% 80% at 70% 45%, #000, transparent 85%);
+  -webkit-mask-image: radial-gradient(70% 80% at 70% 45%, #000, transparent 85%);
+}
+.slash {
+  position: absolute; left: -40px; bottom: -40px; width: 130px; height: 560px; z-index: -1;
+  background: linear-gradient(180deg, transparent, rgba(26,120,255,.9));
+  clip-path: polygon(0 0, 22% 0, 100% 100%, 0 100%); filter: drop-shadow(0 0 14px var(--blue));
+}
+.hero-grid { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.2fr); align-items: center; gap: 12px; padding-block: 38px 34px; }
+.eyebrow { font: 500 11.5px/1 var(--body); letter-spacing: .32em; text-transform: uppercase; color: #8fa6d4; margin: 0 0 26px; }
+h1 { font: 500 clamp(34px, 4.1vw, 60px)/1.12 var(--display); letter-spacing: -.01em; margin: 0 0 24px; text-wrap: balance; }
+h1 em { font-style: normal; color: var(--blue); text-shadow: 0 0 28px rgba(26,140,255,.45); }
+.lead { max-width: 30em; color: #d3def5; font-size: 17px; margin: 0 0 34px; }
+.cta-row { display: flex; align-items: center; flex-wrap: wrap; gap: 28px; margin-bottom: 52px; }
+.feats { display: flex; flex-wrap: wrap; gap: 0; }
+.feat { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; align-items: start; padding: 4px 28px; border-left: 1px solid var(--line); }
+.feat:first-child { padding-left: 0; border-left: 0; }
+.feat .ic { grid-row: span 2; display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--cyan); border-radius: 50%; color: var(--cyan); box-shadow: 0 0 12px rgba(47,160,255,.4); }
+.feat .ic svg { width: 17px; height: 17px; }
+.feat b { font: 600 11px/1.6 var(--body); letter-spacing: .12em; text-transform: uppercase; color: #fff; align-self: end; }
+.feat span { font-size: 12px; color: var(--mute); line-height: 1.4; margin-top: 2px; }
+
+.stage { position: relative; min-height: 560px; height: min(66vh, 640px); min-width: 0; }
+.stage canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; display: block; }
+.stage .fallback { position: absolute; inset: 0; display: grid; place-items: center; }
+.stage .fallback svg { width: min(70%, 420px); filter: drop-shadow(0 0 24px rgba(26,140,255,.8)); }
+
+.rail {
+  position: fixed; right: max(18px, env(safe-area-inset-right, 0px)); top: 50%; transform: translateY(-50%); z-index: 40;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.rail span { writing-mode: vertical-rl; transform: rotate(180deg); font: 500 10px/1 var(--body); letter-spacing: .3em; color: #8fa6d4; margin-bottom: 4px; }
+.rail a { width: 7px; height: 7px; border-radius: 50%; background: #3a4d78; transition: all .25s; position: relative; }
+.rail a.on { background: #fff; box-shadow: 0 0 0 4px rgba(56,212,255,.25), 0 0 0 5px var(--cyan); width: 8px; height: 8px; }
+@media (max-width: 1280px) { .rail { display: none; } }
+
+@media (max-width: 960px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); padding-block: 40px 24px; }
+  .stage { min-height: 380px; height: 70vw; max-height: 520px; }
+  .slash { display: none; }
+  .feats { gap: 18px 0; }
+}
+@media (max-width: 560px) {
+  .feat { padding: 4px 16px; } .feat:first-child { padding-left: 0; }
+  .cta-row { gap: 20px; }
+  .btn { padding: 14px 20px; }
+}
+
+/* ---------- Seções ---------- */
+section { position: relative; }
+.tag { display: flex; align-items: center; gap: 14px; font: 500 11px/1 var(--body); letter-spacing: .22em; text-transform: uppercase; color: #a8bde6; margin-bottom: 20px; }
+.tag::before { content: ""; width: 26px; height: 3px; border-radius: 2px; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+h2 { font: 500 clamp(26px, 3vw, 38px)/1.2 var(--display); margin: 0 0 18px; text-wrap: balance; }
+h2 em { font-style: normal; color: var(--cyan); }
+.sec { padding-block: 84px; }
+.sec.alt { background: linear-gradient(180deg, #050b1d, #060e26); border-block: 1px solid rgba(56,150,255,.14); }
+
+.services { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; }
+@media (min-width: 1180px) { .services { grid-template-columns: 300px minmax(0, 1fr); gap: 56px; align-items: start; } }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+.card {
+  --c: 20px; position: relative; padding: 1px; min-width: 0;
+  background: linear-gradient(160deg, rgba(60,170,255,.85), rgba(56,150,255,.14) 42%, rgba(56,150,255,.45));
+  clip-path: polygon(var(--c) 0, 100% 0, 100% calc(100% - var(--c)), calc(100% - var(--c)) 100%, 0 100%, 0 var(--c));
+  transition: transform .25s;
+}
+.card:hover { transform: translateY(-5px); }
+.card .in {
+  --c2: 19px; height: 100%; display: flex; flex-direction: column; gap: 10px; padding: 28px 24px 24px;
+  background: linear-gradient(180deg, #08142f, #050c20);
+  clip-path: polygon(var(--c2) 0, 100% 0, 100% calc(100% - var(--c2)), calc(100% - var(--c2)) 100%, 0 100%, 0 var(--c2));
+}
+.card:hover .in { background: linear-gradient(180deg, #0a1b40, #060e24); }
+.card .ic { width: 34px; height: 34px; color: var(--cyan); filter: drop-shadow(0 0 8px rgba(56,212,255,.7)); margin-bottom: 8px; }
+.card h3 { font: 600 16px/1.3 var(--body); margin: 0; }
+.card p { margin: 0 0 14px; color: #c3d2ef; font-size: 13.5px; line-height: 1.55; flex: 1; }
+.card .btn { align-self: flex-start; }
+
+.about { display: grid; gap: 48px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 960px) { .about { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 80px; } }
+.about p { color: #c3d2ef; max-width: 36em; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: s; }
+.steps li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 18px; padding: 22px 0; border-top: 1px solid var(--line); counter-increment: s; }
+.steps li:last-child { border-bottom: 1px solid var(--line); }
+.steps li::before { content: counter(s); display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--cyan); border-radius: 50%; font: 500 15px/1 var(--display); color: var(--cyan); box-shadow: 0 0 12px rgba(47,160,255,.35); }
+.steps b { display: block; font: 600 16px/1.3 var(--body); margin-bottom: 4px; }
+.steps span { color: var(--mute); font-size: 14px; }
+
+.works { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; margin-top: 34px; }
+.work { min-width: 0; }
+.shot {
+  aspect-ratio: 16 / 10; max-width: 100%; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; position: relative;
+  background: linear-gradient(160deg, #0a1a3d, #050c20); box-shadow: 0 18px 40px rgba(0,0,0,.45), 0 0 24px rgba(26,140,255,.12);
+  transition: transform .3s, box-shadow .3s;
+}
+.work:hover .shot { transform: translateY(-5px); box-shadow: 0 22px 44px rgba(0,0,0,.5), 0 0 34px rgba(26,140,255,.35); }
+.shot .bar { display: flex; gap: 6px; padding: 10px 12px; border-bottom: 1px solid rgba(56,150,255,.2); }
+.shot .bar i { width: 8px; height: 8px; border-radius: 50%; background: #2b4276; }
+.shot .body { position: absolute; inset: 34px 14px 14px; display: grid; gap: 10px; }
+.shot .b1 { height: 30%; border-radius: 8px; background: linear-gradient(90deg, rgba(26,140,255,.75), rgba(56,212,255,.35)); }
+.shot .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.shot .row i { height: 100%; min-height: 36px; border-radius: 8px; background: rgba(56,150,255,.16); border: 1px solid rgba(56,150,255,.25); }
+.shot.shop .b1 { background: linear-gradient(90deg, rgba(56,212,255,.55), rgba(26,140,255,.2)); }
+.shot.dash .b1 { height: 44%; background: linear-gradient(180deg, rgba(26,140,255,.35), transparent), repeating-linear-gradient(90deg, rgba(56,212,255,.55) 0 8%, transparent 8% 14%); -webkit-mask: linear-gradient(0deg, transparent, #000 90%); mask: linear-gradient(0deg, transparent, #000 90%); }
+.work h3 { font: 600 16px/1.3 var(--body); margin: 16px 0 2px; }
+.work small { color: var(--mute); font-size: 12.5px; letter-spacing: .04em; }
+
+.contact { display: grid; gap: 44px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 960px) { .contact { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 80px; } }
+form { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+form .full { grid-column: 1 / -1; }
+@media (max-width: 560px) { form { grid-template-columns: minmax(0, 1fr); } }
+label { display: grid; gap: 8px; font: 600 11px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: #a8bde6; }
+input, select, textarea {
+  width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line); background: rgba(8,20,48,.7); color: var(--ink);
+  font: 400 15px/1.4 var(--body); letter-spacing: 0; text-transform: none;
+}
+textarea { min-height: 120px; resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(56,212,255,.2), 0 0 18px rgba(56,212,255,.25); }
+.status { grid-column: 1 / -1; min-height: 24px; font-size: 14px; color: var(--cyan); margin: 0; }
+
+footer { border-top: 1px solid var(--line); padding-block: 26px; font: 500 11px/1 var(--body); letter-spacing: .24em; text-transform: uppercase; color: #7f93bf; }
+footer .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+footer .ln { display: inline-flex; align-items: center; gap: 14px; }
+footer .ln::before, footer .ln::after { content: ""; width: 44px; height: 2px; background: var(--blue); box-shadow: 0 0 8px var(--blue); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Modela Web, início">
+      <svg viewBox="0 0 48 42" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38d4ff"/><stop offset="1" stop-color="#1a5cff"/></linearGradient></defs><path d="M3 38V5l11 17L24 5l10 17L45 5v33" fill="none" stroke="url(#lg)" stroke-width="5.5" stroke-linejoin="miter" stroke-linecap="butt"/><path d="M10 38l14-18 14 18" fill="none" stroke="#8fe3ff" stroke-width="2" opacity=".85"/></svg>
+      <span>MODELA <b>WEB</b></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#inicio" class="on">Início</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#portfolio">Portfólio</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <div class="top-actions">
+      <a class="btn" href="#contato"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>Solicitar orçamento</a>
+      <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mnav">
+        <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 8h20M4 14h20M4 20h14"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mnav">
+    <div class="wrap">
+      <a href="#inicio">Início</a><a href="#sobre">Sobre</a><a href="#servicos">Serviços</a><a href="#portfolio">Portfólio</a><a href="#contato">Contato</a>
+    </div>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Seções">
+  <span>Scroll</span>
+  <a href="#inicio" class="on" aria-label="Início"></a>
+  <a href="#sobre" aria-label="Sobre"></a>
+  <a href="#servicos" aria-label="Serviços"></a>
+  <a href="#portfolio" aria-label="Portfólio"></a>
+  <a href="#contato" aria-label="Contato"></a>
+</nav>
+
+<main>
+<section class="hero" id="inicio">
+  <div class="slash" aria-hidden="true"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Desenvolvimento web e sistemas</p>
+      <h1>Soluções Digitais <em>para o seu Negócio</em></h1>
+      <p class="lead">Sites modernos, sistemas sob medida e experiências digitais que impulsionam o seu crescimento.</p>
+      <div class="cta-row">
+        <a class="btn" href="#contato">Solicitar orçamento <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+        <a class="play" href="#portfolio"><i><svg viewBox="0 0 24 24"><path d="M6 3l15 9-15 9z"/></svg></i>Ver apresentação</a>
+      </div>
+      <div class="feats">
+        <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span><b>Performance</b><span>Sites rápidos e otimizados</span></div>
+        <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg></span><b>Segurança</b><span>Seus dados protegidos</span></div>
+        <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></span><b>Tecnologia</b><span>As melhores ferramentas</span></div>
+      </div>
+    </div>
+    <div class="stage" id="stage" aria-label="Logo Modela Web em 3D com anéis em órbita" role="img"></div>
+  </div>
+</section>
+
+<section class="sec" id="servicos">
+  <div class="wrap services">
+    <div>
+      <div class="tag">Nossos serviços</div>
+      <h2>O que podemos <em>fazer por você?</em></h2>
+    </div>
+    <div class="cards">
+      <article class="card"><div class="in">
+        <svg class="ic" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="16" cy="16" r="12.5"/><ellipse cx="16" cy="16" rx="5.5" ry="12.5"/><path d="M3.5 16h25M5 9.5h22M5 22.5h22"/></svg>
+        <h3>Sites Institucionais</h3><p>Apresente sua marca com um site profissional e moderno.</p>
+        <a class="btn sm" href="#contato">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+      </div></article>
+      <article class="card"><div class="in">
+        <svg class="ic" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5h4.5l3.2 15.5h14.5l3-11.5H8"/><circle cx="12" cy="26" r="2"/><circle cx="23" cy="26" r="2"/></svg>
+        <h3>Lojas Virtuais</h3><p>Venda online com segurança, praticidade e alta performance.</p>
+        <a class="btn sm" href="#contato">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+      </div></article>
+      <article class="card"><div class="in">
+        <svg class="ic" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10 9l-7 7 7 7M22 9l7 7-7 7M18.5 5l-5 22"/></svg>
+        <h3>Sistemas Web</h3><p>Soluções personalizadas para o seu negócio.</p>
+        <a class="btn sm" href="#contato">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+      </div></article>
+      <article class="card"><div class="in">
+        <svg class="ic" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><circle cx="16" cy="16" r="4.5"/><circle cx="16" cy="16" r="9.5"/><circle cx="16" cy="16" r="12.6" stroke-width="4.2" stroke-dasharray="4.95 4.95" stroke-linejoin="miter"/></svg>
+        <h3>Automação</h3><p>Otimize processos e aumente sua produtividade.</p>
+        <a class="btn sm" href="#contato">Saiba mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+      </div></article>
+    </div>
+  </div>
+</section>
+
+<section class="sec alt" id="sobre">
+  <div class="wrap about">
+    <div>
+      <div class="tag">Sobre a Modela Web</div>
+      <h2>Código limpo, <em>design com identidade</em></h2>
+      <p>Desde 2020 a Modela Web desenvolve sites, lojas virtuais e sistemas sob medida para empresas que querem presença digital séria. Cada projeto nasce de uma conversa sobre o seu negócio e termina em algo rápido, seguro e fácil de manter.</p>
+    </div>
+    <ol class="steps">
+      <li><div><b>Briefing</b><span>Entendemos objetivos, público e prazo do projeto.</span></div></li>
+      <li><div><b>Design</b><span>Protótipo visual aprovado antes de qualquer linha de código.</span></div></li>
+      <li><div><b>Desenvolvimento</b><span>Construção com foco em velocidade, segurança e SEO.</span></div></li>
+      <li><div><b>Entrega e suporte</b><span>Publicação, treinamento da sua equipe e acompanhamento.</span></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="portfolio">
+  <div class="wrap">
+    <div class="tag">Portfólio</div>
+    <h2>Tipos de projeto <em>que entregamos</em></h2>
+    <div class="works">
+      <div class="work"><div class="shot"><div class="bar"><i></i><i></i><i></i></div><div class="body"><div class="b1"></div><div class="row"><i></i><i></i><i></i></div></div></div><h3>Site institucional</h3><small>Projeto de exemplo</small></div>
+      <div class="work"><div class="shot shop"><div class="bar"><i></i><i></i><i></i></div><div class="body"><div class="b1"></div><div class="row"><i></i><i></i><i></i></div></div></div><h3>Loja virtual</h3><small>Projeto de exemplo</small></div>
+      <div class="work"><div class="shot dash"><div class="bar"><i></i><i></i><i></i></div><div class="body"><div class="b1"></div><div class="row"><i></i><i></i><i></i></div></div></div><h3>Painel de gestão</h3><small>Projeto de exemplo</small></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec alt" id="contato">
+  <div class="wrap contact">
+    <div>
+      <div class="tag">Contato</div>
+      <h2>Vamos <em>modelar</em> o seu projeto?</h2>
+      <p style="color:#c3d2ef;max-width:30em">Conte o que você precisa e receba uma proposta sob medida, com escopo, prazo e valor.</p>
+    </div>
+    <form id="orc" novalidate>
+      <label for="nome">Nome<input id="nome" name="nome" autocomplete="name" required></label>
+      <label for="email">E-mail<input id="email" name="email" type="email" autocomplete="email" required></label>
+      <label class="full" for="tipo">Tipo de projeto
+        <select id="tipo" name="tipo"><option>Site institucional</option><option>Loja virtual</option><option>Sistema web</option><option>Automação</option></select>
+      </label>
+      <label class="full" for="msg">Mensagem<textarea id="msg" name="msg" required></textarea></label>
+      <div class="full"><button class="btn" type="submit">Enviar pedido <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></button></div>
+      <p class="status" id="status" role="status"></p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><span>Modela Web</span><span class="ln">Desde 2020</span></div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  /* ---------- menu e navegação ---------- */
+  var burger = document.getElementById('burger'), mnav = document.getElementById('mnav');
+  burger.addEventListener('click', function () {
+    var open = mnav.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  mnav.addEventListener('click', function (e) { if (e.target.closest('a')) { mnav.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); } });
+
+  var ids = ['inicio', 'sobre', 'servicos', 'portfolio', 'contato'];
+  var navLinks = document.querySelectorAll('.nav a'), dots = document.querySelectorAll('.rail a');
+  function setOn(id) {
+    navLinks.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + id); });
+    dots.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + id); });
+  }
+  function onScroll() {
+    var y = window.scrollY + window.innerHeight * 0.35, cur = ids[0];
+    ids.forEach(function (id) { var el = document.getElementById(id); if (el && el.offsetTop <= y) cur = id; });
+    setOn(cur);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  var form = document.getElementById('orc'), status = document.getElementById('status');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var n = form.nome.value.trim(), m = form.email.value.trim(), t = form.msg.value.trim();
+    if (!n || !/^\S+@\S+\.\S+$/.test(m) || !t) { status.textContent = 'Preencha nome, um e-mail válido e a mensagem.'; return; }
+    status.textContent = 'Pedido anotado, ' + n.split(' ')[0] + '. Esta página é um modelo: ligue o formulário ao seu e-mail ou WhatsApp para receber os pedidos.';
+    form.reset();
+  });
+
+  /* ---------- palco 3D: logo MM + anéis em órbita ---------- */
+  var mount = document.getElementById('stage');
+  function fallback() {
+    mount.innerHTML = '<div class="fallback"><svg viewBox="0 0 48 42"><path d="M3 38V5l11 17L24 5l10 17L45 5v33" fill="none" stroke="#2f9bff" stroke-width="5.5"/></svg></div>';
+  }
+  if (!window.THREE) { fallback(); return; }
+  var T = THREE, renderer;
+  try { renderer = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' }); }
+  catch (err) { fallback(); return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputEncoding = T.sRGBEncoding;
+  renderer.toneMapping = T.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.15;
+  mount.appendChild(renderer.domElement);
+
+  var scene = new T.Scene();
+  var camera = new T.PerspectiveCamera(30, 1, 0.1, 200);
+
+  /* reflexos: cena de ambiente com painéis de luz azul/branca */
+  var envScene = new T.Scene();
+  envScene.add(new T.Mesh(new T.SphereGeometry(60, 32, 16), new T.MeshBasicMaterial({ color: 0x040a1c, side: T.BackSide })));
+  function panel(w, h, hex, k, x, y, z) {
+    var c = new T.Color(hex).multiplyScalar(k);
+    var m = new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshBasicMaterial({ color: c, side: T.DoubleSide }));
+    m.position.set(x, y, z); m.lookAt(0, 0, 0); envScene.add(m);
+  }
+  panel(40, 8, 0xffffff, 4, 0, 30, 12);
+  panel(8, 40, 0x1e90ff, 5, -34, 0, 6);
+  panel(8, 40, 0x00c8ff, 5, 34, 0, 6);
+  panel(50, 5, 0x2a6bff, 5, 0, -22, 18);
+  panel(16, 12, 0xbcd3ff, 3, 6, 6, 40);
+  var pmrem = new T.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(envScene, 0.02).texture;
+
+  scene.add(new T.AmbientLight(0x4a78ff, 0.35));
+  var key = new T.DirectionalLight(0xffffff, 1.1); key.position.set(-6, 10, 14); scene.add(key);
+  var blueL = new T.PointLight(0x1a8cff, 2.4, 60); blueL.position.set(-10, -2, 10); scene.add(blueL);
+  var cyanL = new T.PointLight(0x38d4ff, 2.0, 60); cyanL.position.set(11, 3, 9); scene.add(cyanL);
+
+  var rig = new T.Group(); scene.add(rig);
+
+  /* logo MM extrudada com chanfro */
+  var logo = new T.Group(); rig.add(logo);
+  var DEPTH = 1.1, W = 1.15, BEV = 0.13;
+  var pts = [[-5.4, -3.1], [-5.4, 3.1], [-2.7, -1.0], [0, 3.1], [2.7, -1.0], [5.4, 3.1], [5.4, -3.1]];
+  var metalA = new T.MeshStandardMaterial({ color: 0xa9c0e2, metalness: 1, roughness: 0.2, envMapIntensity: 1.6 });
+  var metalB = new T.MeshStandardMaterial({ color: 0x6f8bb8, metalness: 1, roughness: 0.28, envMapIntensity: 1.5 });
+  var glowMat = new T.MeshBasicMaterial({ color: new T.Color(0x2aa8ff).multiplyScalar(2.2) });
+
+  function bar(a, b, w, depth, bev, mat, e0, e1, z) {
+    var dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy), ang = Math.atan2(dy, dx);
+    var s = new T.Shape();
+    s.moveTo(-e0, -w / 2); s.lineTo(len + e1, -w / 2); s.lineTo(len + e1, w / 2); s.lineTo(-e0, w / 2); s.closePath();
+    var g = new T.ExtrudeGeometry(s, { depth: depth, bevelEnabled: bev > 0, bevelThickness: bev, bevelSize: bev, bevelSegments: 3, curveSegments: 1 });
+    var m = new T.Mesh(g, mat);
+    m.position.set(a[0], a[1], z || 0); m.rotation.z = ang;
+    return m;
+  }
+  for (var i = 0; i < pts.length - 1; i++) {
+    var vert = (i === 0 || i === pts.length - 2);
+    var e0 = (i === 0) ? 0 : W * 0.55, e1 = (i === pts.length - 2) ? 0 : W * 0.55;
+    logo.add(bar(pts[i], pts[i + 1], W, DEPTH, BEV, (i % 2 === 0) ? metalA : metalB, e0, e1, 0));
+  }
+  /* fitas de luz no centro dos traços diagonais */
+  for (var j = 1; j < pts.length - 2; j++) {
+    logo.add(bar(pts[j], pts[j + 1], 0.2, 0.04, 0, glowMat, -0.2, -0.2, DEPTH + BEV + 0.02));
+  }
+  logo.position.z = -DEPTH / 2;
+  logo.scale.setScalar(0.92);
+
+  /* brilho atrás do logo */
+  function glowTex() {
+    var c = document.createElement('canvas'); c.width = c.height = 256;
+    var x = c.getContext('2d'), g = x.createRadialGradient(128, 128, 0, 128, 128, 128);
+    g.addColorStop(0, 'rgba(60,160,255,.85)'); g.addColorStop(.4, 'rgba(26,110,255,.32)'); g.addColorStop(1, 'rgba(26,110,255,0)');
+    x.fillStyle = g; x.fillRect(0, 0, 256, 256);
+    return new T.CanvasTexture(c);
+  }
+  var halo = new T.Sprite(new T.SpriteMaterial({ map: glowTex(), blending: T.AdditiveBlending, depthWrite: false, transparent: true, opacity: .85 }));
+  halo.scale.set(30, 24, 1); halo.position.z = -4; rig.add(halo);
+
+  /* anéis */
+  var orbits = [];
+  var satMat = new T.MeshStandardMaterial({ color: 0x0a1330, metalness: 1, roughness: 0.12, envMapIntensity: 2 });
+  var crystalMat = new T.MeshStandardMaterial({ color: 0x2f9bff, metalness: .6, roughness: .2, emissive: 0x1a6bff, emissiveIntensity: .9, envMapIntensity: 1.4 });
+  function ring(R, tube, arcFrac, hex, k, op, tx, ty, tz, speed, prec) {
+    var tilt = new T.Group(); tilt.rotation.set(tx, ty, tz);
+    var spin = new T.Group(); tilt.add(spin);
+    var col = new T.Color(hex).multiplyScalar(k);
+    var core = new T.Mesh(new T.TorusGeometry(R, tube, 16, 220, Math.PI * 2 * arcFrac),
+      new T.MeshBasicMaterial({ color: col, transparent: true, opacity: op, blending: T.AdditiveBlending, depthWrite: false }));
+    var halo2 = new T.Mesh(new T.TorusGeometry(R, tube * 4.2, 12, 220, Math.PI * 2 * arcFrac),
+      new T.MeshBasicMaterial({ color: col, transparent: true, opacity: op * 0.14, blending: T.AdditiveBlending, depthWrite: false }));
+    spin.add(core); spin.add(halo2);
+    rig.add(tilt);
+    var o = { tilt: tilt, spin: spin, speed: speed, prec: prec, R: R };
+    orbits.push(o); return o;
+  }
+  function satellite(o, ang, mesh) { mesh.position.set(Math.cos(ang) * o.R, Math.sin(ang) * o.R, 0); o.spin.add(mesh); }
+
+  var rA = ring(8.6, 0.07, 0.86, 0x2f9bff, 2.2, 0.95, 1.12, 0.25, -0.3, 0.32, 0.05);
+  var rB = ring(7.5, 0.13, 0.58, 0x1a6bff, 2.6, 0.95, 0.98, -0.4, 0.2, -0.46, -0.04);
+  var rC = ring(9.8, 0.04, 1.0, 0x7edcff, 1.6, 0.6, 1.36, 0.6, 0.1, 0.2, 0.03);
+  var rD = ring(6.3, 0.05, 1.0, 0x3a8cff, 1.8, 0.55, 0.72, 0.15, 0.5, -0.28, 0.06);
+  var s1 = new T.Mesh(new T.SphereGeometry(0.45, 32, 24), satMat); satellite(rA, 0.7, s1);
+  var s2 = new T.Mesh(new T.SphereGeometry(0.22, 24, 16), satMat); satellite(rD, 2.6, s2);
+  var s3 = new T.Mesh(new T.SphereGeometry(0.16, 20, 14), satMat); satellite(rC, 4.4, s3);
+  var c1 = new T.Mesh(new T.OctahedronGeometry(0.36), crystalMat); satellite(rB, 1.1, c1);
+  var c2 = new T.Mesh(new T.BoxGeometry(0.8, 0.28, 0.5), crystalMat); satellite(rC, 0.5, c2);
+  var c3 = new T.Mesh(new T.OctahedronGeometry(0.2), crystalMat); satellite(rA, 3.9, c3);
+
+  /* plataforma com anéis horizontais */
+  var base = new T.Group(); base.position.y = -5.4; base.rotation.x = Math.PI / 2; rig.add(base);
+  var disc = new T.Mesh(new T.CircleGeometry(7.6, 96), new T.MeshStandardMaterial({ color: 0x050c22, metalness: .95, roughness: .25, envMapIntensity: 1.2, transparent: true, opacity: .85 }));
+  disc.position.z = .02; base.add(disc);
+  var plat = [];
+  [[7.7, .06, 1, 0x38d4ff, 2.6, .9, .25], [9.0, .035, .78, 0x2f8bff, 2, .7, -.18], [10.6, .03, 1, 0x1a6bff, 1.6, .5, .1], [6.2, .05, .66, 0x7edcff, 2, .8, -.35]].forEach(function (p) {
+    var m = new T.Mesh(new T.TorusGeometry(p[0], p[1], 8, 200, Math.PI * 2 * p[2]),
+      new T.MeshBasicMaterial({ color: new T.Color(p[3]).multiplyScalar(p[4]), transparent: true, opacity: p[5], blending: T.AdditiveBlending, depthWrite: false }));
+    base.add(m); plat.push({ m: m, s: p[6] });
+  });
+
+  /* partículas */
+  var N = 360, pos = new Float32Array(N * 3);
+  for (var k = 0; k < N; k++) {
+    var r = 9 + Math.random() * 10, th = Math.random() * 6.283, ph = Math.acos(2 * Math.random() - 1);
+    pos[k * 3] = r * Math.sin(ph) * Math.cos(th) * 1.3; pos[k * 3 + 1] = r * Math.cos(ph) * 0.8; pos[k * 3 + 2] = r * Math.sin(ph) * Math.sin(th) - 4;
+  }
+  var pg = new T.BufferGeometry(); pg.setAttribute('position', new T.BufferAttribute(pos, 3));
+  var dust = new T.Points(pg, new T.PointsMaterial({ color: 0x5cc4ff, size: 0.09, transparent: true, opacity: .75, blending: T.AdditiveBlending, depthWrite: false }));
+  scene.add(dust);
+
+  /* tamanho responsivo */
+  function resize() {
+    var w = mount.clientWidth || 600, h = mount.clientHeight || 500, asp = w / h;
+    renderer.setSize(w, h, false);
+    camera.aspect = asp;
+    var dist = 40 * Math.max(1, 1.45 / asp);
+    camera.position.set(0, 3.4, dist);
+    camera.lookAt(0, -0.6, 0);
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(mount); else window.addEventListener('resize', resize);
+
+  /* interação e animação */
+  var px = 0, py = 0, tx = 0, ty = 0;
+  window.addEventListener('pointermove', function (e) {
+    tx = (e.clientX / window.innerWidth - 0.5) * 2; ty = (e.clientY / window.innerHeight - 0.5) * 2;
+  }, { passive: true });
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var clock = new T.Clock(), running = true, visible = true;
+  function frame() {
+    var t = clock.getElapsedTime() * (reduce ? 0.45 : 1);
+    px += (tx - px) * 0.05; py += (ty - py) * 0.05;
+    rig.rotation.y = Math.sin(t * 0.45) * 0.22 + px * 0.28;
+    rig.rotation.x = py * 0.1 - 0.05;
+    logo.position.y = Math.sin(t * 0.9) * 0.18;
+    orbits.forEach(function (o, i) {
+      o.spin.rotation.z = t * o.speed;
+      o.tilt.rotation.y += o.prec * 0.004;
+      o.tilt.rotation.x += Math.sin(t * 0.3 + i) * 0.0006;
+    });
+    plat.forEach(function (p, i) { p.m.rotation.z = t * p.s; });
+    c1.rotation.x = t * 1.4; c1.rotation.y = t * 1.1; c2.rotation.y = t * 1.2; c3.rotation.z = t * 1.8; c3.rotation.x = t;
+    dust.rotation.y = t * 0.02;
+    halo.material.opacity = 0.78 + Math.sin(t * 1.4) * 0.08;
+    blueL.position.x = -10 + Math.sin(t * 0.6) * 3; cyanL.position.x = 11 + Math.cos(t * 0.5) * 3;
+    renderer.render(scene, camera);
+  }
+  function loop() { if (!running || !visible) return; frame(); requestAnimationFrame(loop); }
+  var rafId = 0;
+  function tick() { rafId = 0; if (!visible || document.hidden) return; frame(); rafId = requestAnimationFrame(tick); }
+  function start() { if (!rafId) rafId = requestAnimationFrame(tick); }
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (en) {
+      visible = en[0].isIntersecting;
+      if (visible) start();
+    }).observe(mount);
+  }
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) start(); });
+  start();
+})();
+</script>
+
+</body>
+</html>
